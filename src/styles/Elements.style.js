@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  background: #303030;
+  background: #474747;
   padding: 1.5rem 5rem;
 `;
 
@@ -94,5 +94,66 @@ export const ToolBar = styled.div`
   svg {
     height: 40px;
     width: 40px;
+  }
+`;
+
+export const CanvasContainer = styled(Container)`
+  background: #252525;
+  text-align: center;
+
+  button{
+    padding: 1rem 2rem;
+    font-family: 'Lato', sans-serif;
+    margin: 0rem 1rem;
+    border: 2px solid white;
+    font-size: 1.2rem;
+    width: 100%;
+    max-width: 220px;
+    background: none;
+    color: white;
+    cursor: pointer;
+  }
+`;
+
+
+export const CanvasArea = styled.div`
+  padding: 2rem 0rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  canvas{
+    border: 2px solid;
+    border-color: black;
+    background-color: white;
+  }
+
+`;
+
+export const Modal = styled.div`
+  background: #f3f3f3;;
+  max-width: 600px;
+  padding: 1.5rem 1rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3rem;
+  margin: auto;
+
+  h3{
+    margin: 1rem 0rem;
+  }
+
+  button{
+    background-color: #aeaeae;
+    color: black;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  button:last-of-type{
+    background-color: #f44336;
+    color: white;
+    width: 100%;
   }
 `;
