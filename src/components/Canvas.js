@@ -9,7 +9,7 @@ import {
 } from "../redux/DrawingReducer";
 import { CanvasArea, CanvasContainer, Modal } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef} from "react";
+import { useEffect, useRef, useState} from "react";
 
 const Canvas = () => {
   const { isDrawing } = useSelector((state) => state.drawing);
@@ -21,11 +21,15 @@ const Canvas = () => {
   const crcRef = useRef(null);
   const currentPath = useRef([]);
 
+  
+
   useEffect(() => {
     const canvas = Refcanvas.current;
     const ctx = canvas.getContext("2d");
     crcRef.current = ctx;
-  }, []);
+    clearCanvas();
+    redrawCanvas();
+  }, [lineHistory]);
 
   const startDrawing = (e) => {
     crcRef.current.beginPath();
@@ -63,7 +67,7 @@ const Canvas = () => {
 
   const redrawCanvas = () => {
     lineHistory.forEach((path) => {
-      if (path.length >= 0) {
+      if (path.length > 0) {
         crcRef.current.beginPath();
         crcRef.current.moveTo(path[0].x, path[0].y);
         path.forEach((point) => {
@@ -102,8 +106,8 @@ const Canvas = () => {
       <CanvasArea>
         <canvas
           id="canvas"
-          width={1200}
-          height={700}
+          width={1500}
+          height={1000}
           onMouseMove={currentlyDrawing}
           onMouseDown={startDrawing}
           onMouseUp={endDrawing}
