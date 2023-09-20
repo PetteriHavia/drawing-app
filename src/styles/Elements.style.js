@@ -125,7 +125,7 @@ export const CanvasArea = styled.div`
   canvas{
     border: 2px solid;
     border-color: black;
-    background-color: white;
+    background: white;
   }
 
 `;
