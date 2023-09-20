@@ -9,31 +9,34 @@ import {
 } from "../redux/DrawingReducer";
 import { CanvasArea, CanvasContainer, Modal } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef, useState} from "react";
+import { useEffect, useRef} from "react";
 
-const Canvas = () => {
+const Canvas = ({ctxRef}) => {
   const { isDrawing } = useSelector((state) => state.drawing);
   const { lineHistory } = useSelector((state) => state.history);
   const { PopUp } = useSelector((state) => state.modal);
+  const { lineColor } = useSelector((state) => state.color);
+  const { lineOpacity } = useSelector((state) => state.opacity);
+  const { lineWidth } = useSelector((state) => state.width);
   const dispatch = useDispatch();
 
   const Refcanvas = useRef(null);
-  const crcRef = useRef(null);
   const currentPath = useRef([]);
-
   
-
   useEffect(() => {
     const canvas = Refcanvas.current;
     const ctx = canvas.getContext("2d");
-    crcRef.current = ctx;
-    clearCanvas();
+    ctx.strokeStyle = lineColor;
+    ctx.globalAlpha = lineOpacity;
+    ctx.lineWidth = lineWidth;
+    ctxRef.current = ctx;
     redrawCanvas();
-  }, [lineHistory]);
+  }, [lineHistory, lineColor, lineOpacity, lineWidth]);
 
+  
   const startDrawing = (e) => {
-    crcRef.current.beginPath();
-    crcRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    ctxRef.current.beginPath();
+    ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     dispatch(isDown());
   };
 
@@ -44,43 +47,51 @@ const Canvas = () => {
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
 
-    crcRef.current.lineTo(x, y);
-    crcRef.current.stroke();
+    ctxRef.current.lineTo(x, y);
+    ctxRef.current.stroke();
+   
     currentPath.current.push({ x, y });
+    
   };
 
   const endDrawing = () => {
     dispatch(isUp());
-    crcRef.current.closePath();
-    dispatch(addToHistory(currentPath.current));
+    ctxRef.current.closePath();
+    dispatch(addToHistory({ path: currentPath.current, color: ctxRef.current.strokeStyle,
+      opacity: ctxRef.current.globalAlpha, width: ctxRef.current.lineWidth,}));
     currentPath.current = [];
   };
 
   const handleDelete = () => {
     if (lineHistory.length > 0) {
       dispatch(deleteFromHistory());
-      //dispatch(deleteFromHistory());
-      clearCanvas();
       redrawCanvas();
     }
   };
 
   const redrawCanvas = () => {
-    lineHistory.forEach((path) => {
-      if (path.length > 0) {
-        crcRef.current.beginPath();
-        crcRef.current.moveTo(path[0].x, path[0].y);
+    clearCanvas();
+    lineHistory.forEach((line) => {
+      const { path, color, opacity, width } = line;
+      if (path.length > 0 ) {
+        ctxRef.current.save(); 
+        ctxRef.current.beginPath();
+        ctxRef.current.strokeStyle = color;
+        ctxRef.current.globalAlpha = opacity;
+        ctxRef.current.lineWidth = width;
+        ctxRef.current.moveTo(path[0].x, path[0].y);
         path.forEach((point) => {
-          crcRef.current.lineTo(point.x, point.y);
+          ctxRef.current.lineTo(point.x, point.y);
         });
-        crcRef.current.stroke();
-        crcRef.current.closePath();
+        ctxRef.current.stroke();
+        ctxRef.current.closePath();
+        ctxRef.current.restore(); 
       }
     });
   };
 
   const clearCanvas = () => {
-    crcRef.current.clearRect(0, 0, Refcanvas.current.width, Refcanvas.current.height);
+    ctxRef.current.clearRect(0, 0, Refcanvas.current.width, Refcanvas.current.height);
   };
 
   const handleDeleteAll = () => {
@@ -105,7 +116,6 @@ const Canvas = () => {
       <button onClick={handleShowModal}>Clear Canvas</button>
       <CanvasArea>
         <canvas
-          id="canvas"
           width={1500}
           height={1000}
           onMouseMove={currentlyDrawing}
