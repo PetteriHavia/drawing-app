@@ -1,29 +1,37 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Container, InnerContainer, ToolBar, ToolSettings } from "../styles/Elements.style";
 import {BiCircle, BiSquare} from 'react-icons/bi'
 import { useDispatch, useSelector } from "react-redux";
-import { changeColor} from "../redux/LineReducer"; 
+import { changeColor, changeOpacity, changeWidth } from "../redux/LineReducer"; 
 
-const Menu = () => {
+const Menu = ({ctxRef}) => {
 
-  const { color } = useSelector((state) => state.color);
+  const { lineColor } = useSelector((state) => state.color);
+  const { lineOpacity } = useSelector((state) => state.opacity);
+  const { lineWidth } = useSelector((state) => state.width);
   const dispatch = useDispatch();
-  const lineColor = useSelector((state) => state.color.lineColor);
 
-  const handleChangeColor = () => {
-
+  const handleChangeColor = (e) => {
+   dispatch(changeColor(e.target.value));
   }
 
+  const handleChangeOpacity = (e) => {
+    dispatch(changeOpacity(e.target.value / 100));
+  }
+
+  const handleChangeWidth = (e) => {
+    dispatch(changeWidth(e.target.value));
+  }
 
   return (
     <Container>
       <InnerContainer>
         <ToolSettings>
-          <input type="range" min="1" max="100" id="opacity-range"/>
-          <input id="line-width" defaultValue="1" type="number" min="1" max="100"/>
+          <input type="range" min="1" max="100" id="opacity-range" onChange={handleChangeOpacity }/>
+          <input id="line-width" defaultValue={lineOpacity} type="number" min="1" max="100" onChange={handleChangeWidth}/>
         </ToolSettings>
         <ToolBar>
-          <input type="color" defaultValue={lineColor} />
+          <input type="color" defaultValue={lineColor} onChange={handleChangeColor}/>
           <BiSquare />
           <BiCircle />
         </ToolBar>
