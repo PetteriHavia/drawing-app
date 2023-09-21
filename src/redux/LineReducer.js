@@ -12,6 +12,12 @@ export const colorSlice = createSlice({
   },
 });
 
+//Working on it
+export const colorHistorySlice = createSlice({
+  name: "ColorHistory",
+
+});
+
 
 export const opacitySlice = createSlice({
   name: "LineOpacity",
