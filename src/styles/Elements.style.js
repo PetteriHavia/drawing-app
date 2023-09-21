@@ -15,12 +15,9 @@ export const ToolSettings = styled.div`
   color: white;
   align-items: center;
 
-  * {
-    margin: 0rem 1rem;
-  }
-
   input[type=number] {
     text-align: center;
+    margin-left:2rem;
     width: 60px;
     border: 3px solid white;
     border-radius: 8px;
@@ -66,11 +63,12 @@ export const ToolSettings = styled.div`
 
 export const ToolBar = styled.div`
   display: flex;
+  flex-direction: column;
   color: white;
   align-items: center;
 
   * {
-    margin: 0rem 1rem;
+    margin: 1rem 0rem;
   }
 
   input {
@@ -97,9 +95,34 @@ export const ToolBar = styled.div`
   }
 `;
 
+export const OpacitySlider = styled.div`
+ label{
+    font-size: 20px;
+    margin-bottom: .5rem;
+    display: block;
+  }
+`;
+
+export const WidthSlider = styled.div`
+ label{
+    font-size: 20px;
+    margin-bottom: .5rem;
+    display: block;
+  }
+`;
+
+export const Setting = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 4rem;
+  
+`;
+  
 export const CanvasContainer = styled(Container)`
   background: #252525;
   text-align: center;
+  overflow: scroll;
+  flex-basis: 100%;
 
   button{
     padding: 1rem 2rem;
@@ -156,4 +179,17 @@ export const Modal = styled.div`
     color: white;
     width: 100%;
   }
+`;
+
+//---------------SIDEBAR------------//
+export const Grid = styled.div`
+  display: flex;
+`;
+
+//---------------SIDEBAR------------//
+
+export const SideBar = styled.div`
+  padding: 1rem 1rem;
+  width: 100px;
+  background-color: #474747;
 `;
