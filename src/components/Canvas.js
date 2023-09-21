@@ -21,7 +21,7 @@ const Canvas = ({ctxRef}) => {
   const dispatch = useDispatch();
 
   const Refcanvas = useRef(null);
-  const currentPath = useRef([]);
+  let currentPath = [];
   
   useEffect(() => {
     const canvas = Refcanvas.current;
@@ -50,16 +50,16 @@ const Canvas = ({ctxRef}) => {
     ctxRef.current.lineTo(x, y);
     ctxRef.current.stroke();
    
-    currentPath.current.push({ x, y });
+    currentPath.push({ x, y });
     
   };
 
   const endDrawing = () => {
     dispatch(isUp());
     ctxRef.current.closePath();
-    dispatch(addToHistory({ path: currentPath.current, color: ctxRef.current.strokeStyle,
+    dispatch(addToHistory({ path: currentPath, color: ctxRef.current.strokeStyle,
       opacity: ctxRef.current.globalAlpha, width: ctxRef.current.lineWidth,}));
-    currentPath.current = [];
+    currentPath = [];
   };
 
   const handleDelete = () => {
