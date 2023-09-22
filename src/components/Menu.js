@@ -1,27 +1,30 @@
-import { useRef } from "react";
-import { useContext, useEffect } from "react";
+
 import {
   Container,
   InnerContainer,
-  ToolBar,
   ToolSettings,
   OpacitySlider,
   WidthSlider,
   Setting,
+  Colors,
+  Palette,
+  ColorContainer,
 } from "../styles/Elements.style";
-import { BiCircle, BiSquare } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+import ColorModal from "./ColorModal";
 import {
   changeColor,
   changeOpacity,
   changeWidth,
-  opacityReducer,
+  
 } from "../redux/LineReducer";
 
-const Menu = ({ ctxRef }) => {
+const Menu = () => {
   const { lineColor } = useSelector((state) => state.color);
   const { lineOpacity } = useSelector((state) => state.opacity);
   const { lineWidth } = useSelector((state) => state.width);
+  const { colorHistory } = useSelector((state) => state.colorHistory);
+  const { colorPalette } = useSelector((state) => state.palette);
   const dispatch = useDispatch();
 
   const handleChangeWidth = (e) => {
@@ -41,6 +44,22 @@ const Menu = ({ ctxRef }) => {
       dispatch(changeColor(1));
     }
     dispatch(changeOpacity(opacityValue));
+  };
+
+  const ColorHistory = ({item}) => {
+    return(
+      <Colors color={item.color} onClick={(() => dispatch(changeColor(item.color)))}>
+        <span></span>
+      </Colors>
+    )
+  }
+
+  const ColorPalette = ({item}) => {
+    return(
+      <Colors color={item.color}>
+        <span></span>
+      </Colors>
+    )
   };
 
   const roundetOpacity = (lineOpacity * 100).toFixed(0);
@@ -89,8 +108,21 @@ const Menu = ({ ctxRef }) => {
                 onChange={handleChangeWidth}
               />
             </Setting>
-            
           </WidthSlider>
+          {/*<ColorContainer>
+          {colorHistory.map((item) => (
+            <ColorHistory key={item.color} item={item}/>
+          ))}
+          </ColorContainer>*/}
+          <ColorContainer>
+            <Palette>
+              {colorPalette.map((item) => (
+                <ColorPalette key={item.color} item={item}/>
+              ))}
+            </Palette>
+            <button>Configure</button>
+          </ColorContainer>
+          <ColorModal />
         </ToolSettings>
       </InnerContainer>
     </Container>

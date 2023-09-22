@@ -7,22 +7,24 @@ import {
   modalActive,
   modalHide,
 } from "../redux/DrawingReducer";
+import { addColor} from "../redux/LineReducer";
 import { CanvasArea, CanvasContainer, Modal } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 
-const Canvas = ({ctxRef}) => {
+const Canvas = ({ ctxRef }) => {
   const { isDrawing } = useSelector((state) => state.drawing);
   const { lineHistory } = useSelector((state) => state.history);
   const { PopUp } = useSelector((state) => state.modal);
   const { lineColor } = useSelector((state) => state.color);
   const { lineOpacity } = useSelector((state) => state.opacity);
   const { lineWidth } = useSelector((state) => state.width);
+  const { colorHistory } = useSelector((state) => state.colorHistory);
   const dispatch = useDispatch();
 
   const Refcanvas = useRef(null);
   let currentPath = [];
-  
+
   useEffect(() => {
     const canvas = Refcanvas.current;
     const ctx = canvas.getContext("2d");
@@ -33,7 +35,6 @@ const Canvas = ({ctxRef}) => {
     redrawCanvas();
   }, [lineHistory, lineColor, lineOpacity, lineWidth]);
 
-  
   const startDrawing = (e) => {
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
@@ -49,16 +50,33 @@ const Canvas = ({ctxRef}) => {
 
     ctxRef.current.lineTo(x, y);
     ctxRef.current.stroke();
-   
+
     currentPath.push({ x, y });
-    
   };
 
   const endDrawing = () => {
     dispatch(isUp());
     ctxRef.current.closePath();
-    dispatch(addToHistory({ path: currentPath, color: ctxRef.current.strokeStyle,
-      opacity: ctxRef.current.globalAlpha, width: ctxRef.current.lineWidth,}));
+    dispatch(
+      addToHistory({
+        path: currentPath,
+        color: ctxRef.current.strokeStyle,
+        opacity: ctxRef.current.globalAlpha,
+        width: ctxRef.current.lineWidth,
+      })
+    );
+
+    const newColor = ctxRef.current.strokeStyle;
+
+    const existingColor = colorHistory.findIndex(
+      (element) => element.color === newColor
+    );  
+      //return if color exist
+    if (existingColor !== -1) {
+        return;
+    } else {
+      dispatch(addColor({ color: newColor }));
+    }
     currentPath = [];
   };
 
@@ -73,8 +91,8 @@ const Canvas = ({ctxRef}) => {
     clearCanvas();
     lineHistory.forEach((line) => {
       const { path, color, opacity, width } = line;
-      if (path.length > 0 ) {
-        ctxRef.current.save(); 
+      if (path.length > 0) {
+        ctxRef.current.save();
         ctxRef.current.beginPath();
         ctxRef.current.strokeStyle = color;
         ctxRef.current.globalAlpha = opacity;
@@ -85,13 +103,14 @@ const Canvas = ({ctxRef}) => {
         });
         ctxRef.current.stroke();
         ctxRef.current.closePath();
-        ctxRef.current.restore(); 
+        ctxRef.current.restore();
       }
     });
   };
 
   const clearCanvas = () => {
-    ctxRef.current.clearRect(0, 0, Refcanvas.current.width, Refcanvas.current.height);
+    ctxRef.current.clearRect(0, 0, Refcanvas.current.width, Refcanvas.current.height
+    );
   };
 
   const handleDeleteAll = () => {
@@ -101,7 +120,7 @@ const Canvas = ({ctxRef}) => {
   };
 
   const handleShowModal = () => {
-    if(lineHistory.length > 0) {
+    if (lineHistory.length > 0) {
       dispatch(modalActive());
     }
   };
