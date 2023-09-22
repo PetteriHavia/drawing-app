@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background: #474747;
-  padding: 1.5rem 5rem;
+  padding: .9rem 6rem;
 `;
 
 export const InnerContainer = styled.div`
@@ -19,7 +19,7 @@ export const ToolSettings = styled.div`
     text-align: center;
     margin-left:2rem;
     width: 60px;
-    border: 3px solid white;
+    border: 2px solid white;
     border-radius: 8px;
     border-bottom: 2px solid white;
     line-height: 1.65;
@@ -66,7 +66,6 @@ export const ToolBar = styled.div`
   flex-direction: column;
   color: white;
   align-items: center;
-
   * {
     margin: 1rem 0rem;
   }
@@ -97,17 +96,13 @@ export const ToolBar = styled.div`
 
 export const OpacitySlider = styled.div`
  label{
-    font-size: 20px;
-    margin-bottom: .5rem;
-    display: block;
+    font-size: 1.1rem;
   }
 `;
 
 export const WidthSlider = styled.div`
  label{
-    font-size: 20px;
-    margin-bottom: .5rem;
-    display: block;
+  font-size: 1.1rem;
   }
 `;
 
@@ -117,6 +112,49 @@ export const Setting = styled.div`
   margin-right: 4rem;
   
 `;
+
+export const Colors = styled.div`
+  margin: 0rem 0.2rem;
+  span{
+    background-color: ${props => props.color || '#fff'};
+    //padding: 1rem;
+    width: 25px;
+    height: 25px;
+    display: block;
+    border-radius: 50%;
+  }
+`;
+
+export const ColorContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  button{
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+    background: none;
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+
+    :hover{
+      background-color: #6A6A6A;
+    }
+  }
+`;
+
+export const Palette = styled.div`
+  display: flex;
+  gap: 0.3rem;
+  width: 180px;
+  flex-wrap: wrap;
+  margin-right: 1rem;
+`;
+
+export const ColorMod = styled.div`
+
+`; 
   
 export const CanvasContainer = styled(Container)`
   background: #252525;
@@ -179,6 +217,63 @@ export const Modal = styled.div`
     color: white;
     width: 100%;
   }
+`;
+
+export const ConfigureModal = styled(Modal)`
+  
+  padding: 0rem;
+  max-width: 380px;
+  background-color: #474747;
+  z-index: 100;
+  border-radius: 8px;
+  button:last-of-type{
+    background-color: #6A6A6A;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    border: none;
+  }
+
+  input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+  }
+
+  input::-webkit-color-swatch {
+    border-radius: 50%;
+    border: 3px solid #fff;
+  }
+  input::-moz-color-swatch {
+    border-radius: 50%;
+  }
+
+  .configure-modal-header{
+    display: flex;
+    background: #393939;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+
+    h3{
+      margin: 0rem;
+    }
+
+    svg{
+      font-size: 1.5rem;
+    }
+  }
+`;
+
+export const Inner = styled.div`
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
 `;
 
 //---------------SIDEBAR------------//
