@@ -1,11 +1,8 @@
 import { changeColor } from "../redux/LineReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { BiCircle, BiSquare } from "react-icons/bi";
+import { BiCircle, BiSquare, BiSolidTrash } from "react-icons/bi";
 import {
-  Container,
-  InnerContainer,
   ToolBar,
-  ToolSettings,
   SideBar,
 } from "../styles/Elements.style";
 
@@ -22,11 +19,14 @@ const SideMenu = () => {
         <ToolBar>
           <input
             type="color"
-            defaultValue={lineColor}
+            value={lineColor}
             onChange={handleChangeColor}
           />
           <BiSquare />
           <BiCircle />
+          <div>
+          <BiSolidTrash />
+          </div>
         </ToolBar>
     </SideBar>
   );
