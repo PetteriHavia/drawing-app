@@ -4,9 +4,8 @@ import {
   addToHistory,
   deleteFromHistory,
   deleteAll,
-  modalActive,
-  modalHide,
 } from "../redux/DrawingReducer";
+import { modalActive, modalHide } from "../redux/ModalReducer";
 import { addColor} from "../redux/LineReducer";
 import { CanvasArea, CanvasContainer, Modal } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
@@ -153,7 +152,6 @@ const Canvas = ({ ctxRef }) => {
       ) : (
         ""
       )}
-      ;
     </CanvasContainer>
   );
 };

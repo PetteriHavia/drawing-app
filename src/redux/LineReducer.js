@@ -47,7 +47,8 @@ export const colorPaletteSlice = createSlice({
   },
    reducers: {
     updatePalette: (state, action) => {
-
+      const {index, color} = action.payload;
+      state.colorPalette[index].color = color;
     } 
    },
 });

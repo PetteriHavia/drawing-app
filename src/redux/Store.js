@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { drawingReducer, historyReducer, modalReducer } from "./DrawingReducer";
+import { drawingReducer, historyReducer} from "./DrawingReducer";
 import {
   colorReducer,
   opacityReducer,
@@ -7,6 +7,7 @@ import {
   colorHistoryReducer,
   colorPaletteReducer,
 } from "./LineReducer";
+import { modalReducer, colorModalReducer } from "./ModalReducer";
 
 export default configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export default configureStore({
     width: widthReducer,
     colorHistory: colorHistoryReducer,
     palette: colorPaletteReducer,
+    colorModal: colorModalReducer,
   },
 });
