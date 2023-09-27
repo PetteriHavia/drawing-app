@@ -1,4 +1,3 @@
-
 import {
   Container,
   InnerContainer,
@@ -12,12 +11,8 @@ import {
 } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
 import ColorModal from "./ColorModal";
-import {
-  changeColor,
-  changeOpacity,
-  changeWidth,
-  
-} from "../redux/LineReducer";
+import { changeColor, changeOpacity, changeWidth } from "../redux/LineReducer";
+import { colorModalActive } from "../redux/ModalReducer";
 
 const Menu = () => {
   const { lineColor } = useSelector((state) => state.color);
@@ -25,6 +20,7 @@ const Menu = () => {
   const { lineWidth } = useSelector((state) => state.width);
   const { colorHistory } = useSelector((state) => state.colorHistory);
   const { colorPalette } = useSelector((state) => state.palette);
+  const { colorPopUp } = useSelector((state) => state.colorModal);
   const dispatch = useDispatch();
 
   const handleChangeWidth = (e) => {
@@ -46,20 +42,27 @@ const Menu = () => {
     dispatch(changeOpacity(opacityValue));
   };
 
-  const ColorHistory = ({item}) => {
-    return(
-      <Colors color={item.color} onClick={(() => dispatch(changeColor(item.color)))}>
+  const ColorHistory = ({ item }) => {
+    return (
+      <Colors
+        color={item.color}
+        onClick={() => dispatch(changeColor(item.color))}
+      >
         <span></span>
       </Colors>
-    )
-  }
+    );
+  };
 
-  const ColorPalette = ({item}) => {
-    return(
-      <Colors color={item.color}>
+  const ColorPalette = ({ item }) => {
+    return (
+      <Colors color={item.color} onClick={() => dispatch(changeColor(item.color))}>
         <span></span>
       </Colors>
-    )
+    );
+  };
+
+  const handleShowModal = () => {
+    dispatch(colorModalActive());
   };
 
   const roundetOpacity = (lineOpacity * 100).toFixed(0);
@@ -109,20 +112,20 @@ const Menu = () => {
               />
             </Setting>
           </WidthSlider>
-          {/*<ColorContainer>
+          {<ColorContainer>
           {colorHistory.map((item) => (
             <ColorHistory key={item.color} item={item}/>
           ))}
-          </ColorContainer>*/}
+          </ColorContainer>}
           <ColorContainer>
             <Palette>
               {colorPalette.map((item) => (
-                <ColorPalette key={item.color} item={item}/>
+                <ColorPalette key={item.color} item={item} />
               ))}
             </Palette>
-            <button>Configure</button>
+            <button onClick={handleShowModal}>Configure</button>
           </ColorContainer>
-          <ColorModal />
+          {colorPopUp ? <ColorModal /> : ""}
         </ToolSettings>
       </InnerContainer>
     </Container>
