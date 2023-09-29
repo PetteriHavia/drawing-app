@@ -2,14 +2,16 @@ import {
   isDown,
   isUp,
   addToHistory,
-  deleteFromHistory,
-  deleteAll,
+  addToCurrentPath,
+  emptyCurrentPath,
+  addToredoHistory
 } from "../redux/DrawingReducer";
-import { modalActive, modalHide } from "../redux/ModalReducer";
-import { addColor} from "../redux/LineReducer";
-import { CanvasArea, CanvasContainer, Modal } from "../styles/Elements.style";
+import { addColor } from "../redux/LineReducer";
+import { CanvasArea, CanvasContainer } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
+import { clearCanvas } from "../utils/clearCanvas";
+import Modal from "./Modal";
 
 const Canvas = ({ ctxRef }) => {
   const { isDrawing } = useSelector((state) => state.drawing);
@@ -19,10 +21,12 @@ const Canvas = ({ ctxRef }) => {
   const { lineOpacity } = useSelector((state) => state.opacity);
   const { lineWidth } = useSelector((state) => state.width);
   const { colorHistory } = useSelector((state) => state.colorHistory);
+  const { toolType } = useSelector((state) => state.tool);
+  const { currentPath } = useSelector((state) => state.currentPath);
+  const { redoHistory } = useSelector((state) => state.redo);
   const dispatch = useDispatch();
 
   const Refcanvas = useRef(null);
-  let currentPath = [];
 
   useEffect(() => {
     const canvas = Refcanvas.current;
@@ -32,7 +36,7 @@ const Canvas = ({ ctxRef }) => {
     ctx.lineWidth = lineWidth;
     ctxRef.current = ctx;
     redrawCanvas();
-  }, [lineHistory, lineColor, lineOpacity, lineWidth]);
+  }, [lineHistory, lineColor, lineOpacity, lineWidth, toolType]);
 
   const startDrawing = (e) => {
     ctxRef.current.beginPath();
@@ -49,8 +53,10 @@ const Canvas = ({ ctxRef }) => {
 
     ctxRef.current.lineTo(x, y);
     ctxRef.current.stroke();
-
-    currentPath.push({ x, y });
+    if (toolType === "eraser") {
+      ctxRef.current.strokeStyle = "white";
+    }
+    dispatch(addToCurrentPath({ x, y }));
   };
 
   const endDrawing = () => {
@@ -69,25 +75,17 @@ const Canvas = ({ ctxRef }) => {
 
     const existingColor = colorHistory.findIndex(
       (element) => element.color === newColor
-    );  
-      //return if color exist
-    if (existingColor !== -1) {
-        return;
+    );
+    if (existingColor !== -1 || toolType === "eraser" || toolType === "") {
+      return;
     } else {
       dispatch(addColor({ color: newColor }));
     }
-    currentPath = [];
-  };
-
-  const handleDelete = () => {
-    if (lineHistory.length > 0) {
-      dispatch(deleteFromHistory());
-      redrawCanvas();
-    }
+    dispatch(emptyCurrentPath());
   };
 
   const redrawCanvas = () => {
-    clearCanvas();
+    clearCanvas(ctxRef, dispatch);
     lineHistory.forEach((line) => {
       const { path, color, opacity, width } = line;
       if (path.length > 0) {
@@ -107,31 +105,8 @@ const Canvas = ({ ctxRef }) => {
     });
   };
 
-  const clearCanvas = () => {
-    ctxRef.current.clearRect(0, 0, Refcanvas.current.width, Refcanvas.current.height
-    );
-  };
-
-  const handleDeleteAll = () => {
-    dispatch(deleteAll());
-    clearCanvas();
-    dispatch(modalHide());
-  };
-
-  const handleShowModal = () => {
-    if (lineHistory.length > 0) {
-      dispatch(modalActive());
-    }
-  };
-
-  const handleHideModal = () => {
-    dispatch(modalHide());
-  };
-
   return (
     <CanvasContainer>
-      <button onClick={handleDelete}>Delete Last Line</button>
-      <button onClick={handleShowModal}>Clear Canvas</button>
       <CanvasArea>
         <canvas
           width={1500}
@@ -142,16 +117,7 @@ const Canvas = ({ ctxRef }) => {
           ref={Refcanvas}
         />
       </CanvasArea>
-      {PopUp ? (
-        <Modal>
-          <h2>Clear Canvas</h2>
-          <h3>Are you sure you want to clear canvas?</h3>
-          <button onClick={handleHideModal}>Cancel</button>
-          <button onClick={handleDeleteAll}>Clear Canvas</button>
-        </Modal>
-      ) : (
-        ""
-      )}
+      {PopUp ? <Modal ctxRef={ctxRef} /> : ""}
     </CanvasContainer>
   );
 };
