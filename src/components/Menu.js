@@ -15,7 +15,6 @@ import { changeColor, changeOpacity, changeWidth } from "../redux/LineReducer";
 import { colorModalActive } from "../redux/ModalReducer";
 
 const Menu = () => {
-  const { lineColor } = useSelector((state) => state.color);
   const { lineOpacity } = useSelector((state) => state.opacity);
   const { lineWidth } = useSelector((state) => state.width);
   const { colorHistory } = useSelector((state) => state.colorHistory);
