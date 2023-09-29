@@ -66,9 +66,6 @@ export const ToolBar = styled.div`
   flex-direction: column;
   color: white;
   align-items: center;
-  * {
-    margin: 1rem 0rem;
-  }
 
   input {
     -webkit-appearance: none;
@@ -79,6 +76,7 @@ export const ToolBar = styled.div`
     height: 40px;
     border: none;
     cursor: pointer;
+    margin: 0rem 0rem 1rem;
   }
   input::-webkit-color-swatch {
     border-radius: 50%;
@@ -91,6 +89,13 @@ export const ToolBar = styled.div`
   svg {
     height: 40px;
     width: 40px;
+    color: white;
+    margin: 1rem 0rem;
+  }
+
+  button{
+    background:none;
+    border: none;
   }
 `;
 
@@ -110,7 +115,6 @@ export const Setting = styled.div`
   display: flex;
   align-items: center;
   margin-right: 4rem;
-  
 `;
 
 export const Colors = styled.div`
@@ -176,7 +180,6 @@ export const CanvasContainer = styled(Container)`
   }
 `;
 
-
 export const CanvasArea = styled.div`
   padding: 2rem 0rem;
   position: relative;
@@ -191,7 +194,7 @@ export const CanvasArea = styled.div`
 
 `;
 
-export const Modal = styled.div`
+export const ModalStyle = styled.div`
   background: #f3f3f3;;
   max-width: 600px;
   padding: 1.5rem 1rem;
@@ -219,8 +222,7 @@ export const Modal = styled.div`
   }
 `;
 
-export const ConfigureModal = styled(Modal)`
-  
+export const ConfigureModal = styled(ModalStyle)`
   padding: 0rem;
   max-width: 380px;
   background-color: #474747;
