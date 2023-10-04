@@ -1,20 +1,19 @@
 import Menu from "../components/Menu";
 import Canvas from "../components/Canvas";
 import SideMenu from "../components/SideMenu";
-import { Grid } from "../styles/Elements.style";
+import { FlexContainer } from "../styles/Elements.style";
 import { useRef } from "react";
 
 const Home = () => {
-
   const ctxRef = useRef(null);
-  
+
   return (
     <>
       <Menu ctxRef={ctxRef} />
-      <Grid>
+      <FlexContainer>
         <SideMenu ctxRef={ctxRef} />
         <Canvas ctxRef={ctxRef} />
-      </Grid>
+      </FlexContainer>
     </>
   );
 };
