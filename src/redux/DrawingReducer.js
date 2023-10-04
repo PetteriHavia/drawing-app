@@ -45,7 +45,7 @@ export const currentPathSlice = createSlice({
       state.currentPath.push({x, y});
     },
     emptyCurrentPath: (state) => {
-      state.currentPath = []; // Set the state to a new empty array
+      state.currentPath = [];
     },
   },
 })
@@ -61,6 +61,9 @@ export const redoSlice = createSlice({
     },
     deleteFromredoHistory: (state) => {
       state.redoHistory.pop();
+    },
+    emptyRedoHistory: (state) => {
+      state.redoHistory = [];
     }
   },
 })
@@ -80,7 +83,7 @@ export const toolSlice = createSlice({
 export const { isDown, isUp } = drawingSlice.actions;
 export const { addToHistory, deleteFromHistory, deleteAll } = historySlice.actions;
 export const { addToCurrentPath, emptyCurrentPath} = currentPathSlice.actions;
-export const { addToredoHistory, deleteFromredoHistory } = redoSlice.actions;
+export const { addToredoHistory, deleteFromredoHistory, emptyRedoHistory } = redoSlice.actions;
 export const { changeTool } = toolSlice.actions;
 
 export const drawingReducer = drawingSlice.reducer;
