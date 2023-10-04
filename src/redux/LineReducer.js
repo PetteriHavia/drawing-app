@@ -20,8 +20,8 @@ export const colorHistorySlice = createSlice({
   reducers: {
     addColor: (state, action) => {
       if (state.colorHistory.length >= 10) {
-        state.colorHistory.shift();
-        state.colorHistory.push(action.payload);
+        state.colorHistory.pop();
+        state.colorHistory.unshift(action.payload);
       } else {
         state.colorHistory.push(action.payload);
       }
@@ -56,7 +56,7 @@ export const colorPaletteSlice = createSlice({
 export const opacitySlice = createSlice({
   name: "LineOpacity",
   initialState: {
-    lineOpacity: "1",
+    lineOpacity: 1,
   },
   reducers: {
     changeOpacity: (state, action) => {
@@ -66,9 +66,9 @@ export const opacitySlice = createSlice({
 });
 
 export const widthSlice = createSlice({
-  name: "LineOpacity",
+  name: "LineWidth",
   initialState: {
-    lineWidth: "5",
+    lineWidth: 5,
   },
   reducers: {
     changeWidth: (state, action) => {
