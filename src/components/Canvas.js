@@ -4,14 +4,14 @@ import {
   addToHistory,
   addToCurrentPath,
   emptyCurrentPath,
-  addToredoHistory
 } from "../redux/DrawingReducer";
 import { addColor } from "../redux/LineReducer";
 import { CanvasArea, CanvasContainer } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import { clearCanvas } from "../utils/clearCanvas";
-import Modal from "./Modal";
+import DeleteAllModal from "./DeleteAllModal";
+import { toolTypeNotEmpty } from "../utils/toolTypeCheck";
 
 const Canvas = ({ ctxRef }) => {
   const { isDrawing } = useSelector((state) => state.drawing);
@@ -23,7 +23,6 @@ const Canvas = ({ ctxRef }) => {
   const { colorHistory } = useSelector((state) => state.colorHistory);
   const { toolType } = useSelector((state) => state.tool);
   const { currentPath } = useSelector((state) => state.currentPath);
-  const { redoHistory } = useSelector((state) => state.redo);
   const dispatch = useDispatch();
 
   const Refcanvas = useRef(null);
@@ -39,49 +38,56 @@ const Canvas = ({ ctxRef }) => {
   }, [lineHistory, lineColor, lineOpacity, lineWidth, toolType]);
 
   const startDrawing = (e) => {
-    ctxRef.current.beginPath();
-    ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    dispatch(isDown());
+    toolTypeNotEmpty(toolType, () => {
+      ctxRef.current.beginPath();
+      ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+      dispatch(isDown());
+    });
   };
 
   const currentlyDrawing = (e) => {
-    if (!isDrawing) {
-      return;
-    }
-    const x = e.nativeEvent.offsetX;
-    const y = e.nativeEvent.offsetY;
+    toolTypeNotEmpty(toolType, () => {
+      if (!isDrawing) {
+        return;
+      }
+    
+      const x = e.nativeEvent.offsetX;
+      const y = e.nativeEvent.offsetY;
 
-    ctxRef.current.lineTo(x, y);
-    ctxRef.current.stroke();
-    if (toolType === "eraser") {
-      ctxRef.current.strokeStyle = "white";
-    }
-    dispatch(addToCurrentPath({ x, y }));
+      ctxRef.current.lineTo(x, y);
+      ctxRef.current.stroke();
+      if (toolType === "eraser") {
+        ctxRef.current.strokeStyle = "white";
+      }
+      dispatch(addToCurrentPath({ x, y }));
+    });
   };
 
   const endDrawing = () => {
-    dispatch(isUp());
-    ctxRef.current.closePath();
-    dispatch(
-      addToHistory({
-        path: currentPath,
-        color: ctxRef.current.strokeStyle,
-        opacity: ctxRef.current.globalAlpha,
-        width: ctxRef.current.lineWidth,
-      })
-    );
+    toolTypeNotEmpty(toolType, () => {
+      dispatch(isUp());
+      ctxRef.current.closePath();
+      dispatch(
+        addToHistory({
+          path: currentPath,
+          color: ctxRef.current.strokeStyle,
+          opacity: ctxRef.current.globalAlpha,
+          width: ctxRef.current.lineWidth,
+        })
+      );
 
-    const newColor = ctxRef.current.strokeStyle;
+      const newColor = ctxRef.current.strokeStyle;
 
-    const existingColor = colorHistory.findIndex(
-      (element) => element.color === newColor
-    );
-    if (existingColor !== -1 || toolType === "eraser" || toolType === "") {
-      return;
-    } else {
-      dispatch(addColor({ color: newColor }));
-    }
-    dispatch(emptyCurrentPath());
+      const existingColor = colorHistory.findIndex(
+        (element) => element.color === newColor
+      );
+      if (existingColor !== -1 || toolType === "eraser" || toolType === "") {
+        return;
+      } else {
+        dispatch(addColor({ color: newColor }));
+      }
+      dispatch(emptyCurrentPath());
+    });
   };
 
   const redrawCanvas = () => {
@@ -109,15 +115,15 @@ const Canvas = ({ ctxRef }) => {
     <CanvasContainer>
       <CanvasArea>
         <canvas
-          width={1500}
-          height={1000}
+          width={1780}
+          height={800}
           onMouseMove={currentlyDrawing}
           onMouseDown={startDrawing}
           onMouseUp={endDrawing}
           ref={Refcanvas}
         />
       </CanvasArea>
-      {PopUp ? <Modal ctxRef={ctxRef} /> : ""}
+      {PopUp ? <DeleteAllModal ctxRef={ctxRef} /> : null}
     </CanvasContainer>
   );
 };
