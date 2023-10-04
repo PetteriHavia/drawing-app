@@ -22,8 +22,8 @@ export const historySlice = createSlice({
   },
   reducers: {
     addToHistory: (state, action) => {
-      const {path, color, opacity, width} = action.payload;
-      state.lineHistory.push({path, color, opacity, width});
+      const {path, color, opacity, width, tool, global} = action.payload;
+      state.lineHistory.push({path, color, opacity, width, tool, global});
     },
     deleteFromHistory: (state) => {
       state.lineHistory.pop();
