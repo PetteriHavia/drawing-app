@@ -14,7 +14,7 @@ export const ToolSettings = styled.div`
   color: white;
   align-items: center;
   gap: 4rem;
-  padding: 0.9rem 6rem;
+  padding: 1rem 6rem;
   z-index: 400;
   background: #474747;
 
@@ -202,7 +202,7 @@ export const ColorContainer = styled.div`
     @media (max-width: 600px) {
       flex-direction: column;
 
-      button{
+      button {
         margin: 0.5rem 0rem;
       }
 
@@ -287,9 +287,6 @@ export const ModalStyle = styled.div`
     color: white;
     width: 100%;
   }
-
-
-
 `;
 
 export const ConfigureModal = styled(ModalStyle)`
