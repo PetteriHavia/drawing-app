@@ -41,6 +41,7 @@ const Canvas = ({ ctxRef }) => {
     toolTypeNotEmpty(toolType, () => {
       ctxRef.current.beginPath();
       ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+      ctxRef.current.globalCompositeOperation = toolType === "eraser" ? "destination-out" : "source-over";
       dispatch(isDown());
     });
   };
@@ -56,9 +57,6 @@ const Canvas = ({ ctxRef }) => {
 
       ctxRef.current.lineTo(x, y);
       ctxRef.current.stroke();
-      if (toolType === "eraser") {
-        ctxRef.current.strokeStyle = "white";
-      }
       dispatch(addToCurrentPath({ x, y }));
     });
   };
@@ -66,13 +64,19 @@ const Canvas = ({ ctxRef }) => {
   const endDrawing = () => {
     toolTypeNotEmpty(toolType, () => {
       dispatch(isUp());
+      let global = ctxRef.current.globalCompositeOperation = "source-over"; 
       ctxRef.current.closePath();
+      if(toolType === "eraser"){
+        global = ctxRef.current.globalCompositeOperation = "destination-out"; 
+      }
       dispatch(
         addToHistory({
           path: currentPath,
           color: ctxRef.current.strokeStyle,
           opacity: ctxRef.current.globalAlpha,
           width: ctxRef.current.lineWidth,
+          global: global,
+          tool: toolType,
         })
       );
 
@@ -93,13 +97,14 @@ const Canvas = ({ ctxRef }) => {
   const redrawCanvas = () => {
     clearCanvas(ctxRef, dispatch);
     lineHistory.forEach((line) => {
-      const { path, color, opacity, width } = line;
+      const { path, color, opacity, width, global } = line;
       if (path.length > 0) {
         ctxRef.current.save();
         ctxRef.current.beginPath();
         ctxRef.current.strokeStyle = color;
         ctxRef.current.globalAlpha = opacity;
         ctxRef.current.lineWidth = width;
+        ctxRef.current.globalCompositeOperation = global;
         ctxRef.current.moveTo(path[0].x, path[0].y);
         path.forEach((point) => {
           ctxRef.current.lineTo(point.x, point.y);
