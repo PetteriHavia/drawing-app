@@ -1,13 +1,11 @@
 import {
-  Container,
-  InnerContainer,
   ToolSettings,
-  OpacitySlider,
-  WidthSlider,
   Setting,
   Colors,
   Palette,
   ColorContainer,
+  Slider,
+  InputContainer,
 } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
 import ColorModal from "./ColorModal";
@@ -24,37 +22,48 @@ const Menu = () => {
 
   const handleChangeWidth = (e) => {
     let value = e.target.value;
-    if (value > 150) {
+
+    if (isNaN(value) || value < 0) {
+      value = 1;
+    } else if (value > 150) {
       value = 150;
-      dispatch(changeWidth(150));
     }
     dispatch(changeWidth(value));
   };
 
   const handleChangeOpacity = (e) => {
-    const value = e.target.value;
-    let opacityValue = parseFloat(value) / 100;
-    if (opacityValue > 1) {
+    let opacityValue = parseFloat(e.target.value) / 100;
+
+    if (isNaN(opacityValue) || opacityValue < 0) {
+      opacityValue = 0.01;
+    } else if (opacityValue > 1) {
       opacityValue = 1;
-      dispatch(changeColor(1));
     }
     dispatch(changeOpacity(opacityValue));
   };
 
-  const ColorHistory = ({ item }) => {
+  const ColorHistory = ({ className }) => {
     return (
-      <Colors
-        color={item.color}
-        onClick={() => dispatch(changeColor(item.color))}
-      >
-        <span></span>
-      </Colors>
+      <div className={className}>
+        {colorHistory.map((item) => (
+          <Colors
+            key={item.color}
+            color={item.color}
+            onClick={() => dispatch(changeColor(item.color))}
+          >
+            <span></span>
+          </Colors>
+        ))}
+      </div>
     );
   };
 
   const ColorPalette = ({ item }) => {
     return (
-      <Colors color={item.color} onClick={() => dispatch(changeColor(item.color))}>
+      <Colors
+        color={item.color}
+        onClick={() => dispatch(changeColor(item.color))}
+      >
         <span></span>
       </Colors>
     );
@@ -67,67 +76,63 @@ const Menu = () => {
   const roundetOpacity = (lineOpacity * 100).toFixed(0);
 
   return (
-    <Container>
-      <InnerContainer>
-        <ToolSettings>
-          <OpacitySlider>
-            <label>Opacity</label>
-            <Setting>
-              <input
-                type="range"
-                min="1"
-                max="100"
-                value={lineOpacity * 100}
-                id="opacity-range"
-                onChange={handleChangeOpacity}
-              />
-              <input
-                id="line-opacity"
-                value={roundetOpacity}
-                type="number"
-                min="1"
-                max="100"
-                onChange={handleChangeOpacity}
-              />
-            </Setting>
-          </OpacitySlider>
-          <WidthSlider>
-            <label>Line Width</label>
-            <Setting>
-              <input
-                type="range"
-                value={lineWidth}
-                min="1"
-                max="150"
-                onChange={handleChangeWidth}
-              />
-              <input
-                id="line-width"
-                value={lineWidth}
-                type="number"
-                min="1"
-                max="150"
-                onChange={handleChangeWidth}
-              />
-            </Setting>
-          </WidthSlider>
-          {<ColorContainer>
-          {colorHistory.map((item) => (
-            <ColorHistory key={item.color} item={item}/>
+    <ToolSettings>
+      <InputContainer>
+        <Slider>
+          <label>Opacity</label>
+          <Setting>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value={lineOpacity * 100}
+              id="opacity-range"
+              onChange={handleChangeOpacity}
+            />
+            <input
+              id="line-opacity"
+              value={roundetOpacity}
+              type="number"
+              min="1"
+              max="100"
+              onChange={handleChangeOpacity}
+            />
+          </Setting>
+        </Slider>
+        <Slider>
+          <label>Line Width</label>
+          <Setting>
+            <input
+              type="range"
+              value={lineWidth}
+              min="1"
+              max="150"
+              onChange={handleChangeWidth}
+            />
+            <input
+              id="line-width"
+              value={lineWidth}
+              type="number"
+              min="1"
+              max="150"
+              onChange={handleChangeWidth}
+            />
+          </Setting>
+        </Slider>
+      </InputContainer>
+      <ColorContainer>
+        <Palette>
+          {colorPalette.map((item) => (
+            <ColorPalette key={item.color} item={item} />
           ))}
-          </ColorContainer>}
-          <ColorContainer>
-            <Palette>
-              {colorPalette.map((item) => (
-                <ColorPalette key={item.color} item={item} />
-              ))}
-            </Palette>
-            <button onClick={handleShowModal}>Configure</button>
-          </ColorContainer>
-          {colorPopUp ? <ColorModal /> : ""}
-        </ToolSettings>
-      </InnerContainer>
-    </Container>
+        </Palette>
+        <button onClick={handleShowModal}>Configure</button>
+      </ColorContainer>
+      <ColorContainer>
+        <ColorHistory className="wrap-history" />
+      </ColorContainer>
+      {colorPopUp ? <ColorModal /> : null}
+    </ToolSettings>
   );
 };
 
