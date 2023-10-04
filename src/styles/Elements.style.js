@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background: #474747;
-  padding: .9rem 6rem;
 `;
 
 export const InnerContainer = styled.div`
@@ -14,10 +13,14 @@ export const ToolSettings = styled.div`
   display: flex;
   color: white;
   align-items: center;
+  gap: 4rem;
+  padding: 0.9rem 6rem;
+  z-index: 400;
+  background: #474747;
 
-  input[type=number] {
+  input[type="number"] {
     text-align: center;
-    margin-left:2rem;
+    margin-left: 1rem;
     width: 60px;
     border: 2px solid white;
     border-radius: 8px;
@@ -28,11 +31,11 @@ export const ToolSettings = styled.div`
     font-size: 1.2rem;
   }
 
-  input[type=number] {
+  input[type="number"] {
     -moz-appearance: textfield;
   }
 
-  input[type=range] {
+  input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
     border-radius: 8px;
@@ -43,7 +46,7 @@ export const ToolSettings = styled.div`
     transition: opacity 0.2s;
   }
 
-  input[type=range]::-webkit-slider-thumb {
+  input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 10px;
@@ -53,11 +56,35 @@ export const ToolSettings = styled.div`
     cursor: pointer;
   }
 
-  input[type=range]::-moz-range-thumb {
+  input[type="range"]::-moz-range-thumb {
     width: 25px;
     height: 25px;
     background: #04aa6d;
     cursor: pointer;
+  }
+
+  @media (max-width: 1250px) {
+    padding: 0.9rem 1rem 0.9rem 2rem;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 850px) {
+    input[type="range"] {
+      display: none;
+    }
+    input[type="number"] {
+      margin: 0.2rem 0rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+    gap: 0.5rem;
+    justify-content: space-evenly;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
   }
 `;
 
@@ -90,38 +117,35 @@ export const ToolBar = styled.div`
     height: 40px;
     width: 40px;
     color: white;
-    margin: 1rem 0rem;
   }
 
-  button{
-    background:none;
+  button {
+    background: none;
     border: none;
+    margin: 1.5rem 0rem;
   }
 `;
 
-export const OpacitySlider = styled.div`
- label{
+export const Slider = styled.div`
+  label {
     font-size: 1.1rem;
-  }
-`;
-
-export const WidthSlider = styled.div`
- label{
-  font-size: 1.1rem;
   }
 `;
 
 export const Setting = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 4rem;
+
+  @media (max-width: 600px) {
+    justify-content: center;
+  }
 `;
 
 export const Colors = styled.div`
   margin: 0rem 0.2rem;
-  span{
-    background-color: ${props => props.color || '#fff'};
-    //padding: 1rem;
+  cursor: pointer;
+  span {
+    background-color: ${(props) => props.color || "#fff"};
     width: 25px;
     height: 25px;
     display: block;
@@ -129,11 +153,20 @@ export const Colors = styled.div`
   }
 `;
 
+export const InputContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  @media (max-width: 600px) {
+    display: flex;
+    gap: 2rem;
+  }
+`;
+
 export const ColorContainer = styled.div`
   display: flex;
   align-items: center;
 
-  button{
+  button {
     padding: 0.3rem 0.5rem;
     font-size: 1rem;
     background: none;
@@ -142,8 +175,41 @@ export const ColorContainer = styled.div`
     cursor: pointer;
     color: white;
 
-    :hover{
-      background-color: #6A6A6A;
+    :hover {
+      background-color: #6a6a6a;
+    }
+  }
+
+  .wrap-history {
+    display: flex;
+  }
+
+  @media (max-width: 992px) {
+    .wrap-history {
+      gap: 0.3rem;
+      width: 180px;
+      flex-wrap: wrap;
+      margin-right: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .wrap-history {
+        width: 150px;
+        margin: 0rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+
+      button{
+        margin: 0.5rem 0rem;
+      }
+
+      .wrap-history {
+        width: 100%;
+        justify-content: center;
+      }
     }
   }
 `;
@@ -154,21 +220,26 @@ export const Palette = styled.div`
   width: 180px;
   flex-wrap: wrap;
   margin-right: 1rem;
+
+  @media (max-width: 768px) {
+    width: 150px;
+    margin: 0rem;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
-export const ColorMod = styled.div`
-
-`; 
-  
-export const CanvasContainer = styled(Container)`
+export const CanvasContainer = styled.div`
   background: #252525;
   text-align: center;
-  overflow: scroll;
-  flex-basis: 100%;
+  overflow: auto;
 
-  button{
+  button {
     padding: 1rem 2rem;
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     margin: 0rem 1rem;
     border: 2px solid white;
     font-size: 1.2rem;
@@ -182,20 +253,16 @@ export const CanvasContainer = styled(Container)`
 
 export const CanvasArea = styled.div`
   padding: 2rem 0rem;
-  position: relative;
-  display: flex;
-  justify-content: center;
 
-  canvas{
+  canvas {
     border: 2px solid;
     border-color: black;
     background: white;
   }
-
 `;
 
 export const ModalStyle = styled.div`
-  background: #f3f3f3;;
+  background: #f3f3f3;
   max-width: 600px;
   padding: 1.5rem 1rem;
   position: absolute;
@@ -204,22 +271,25 @@ export const ModalStyle = styled.div`
   top: 3rem;
   margin: auto;
 
-  h3{
+  h3 {
     margin: 1rem 0rem;
   }
 
-  button{
+  button {
     background-color: #aeaeae;
     color: black;
     cursor: pointer;
     width: 100%;
   }
 
-  button:last-of-type{
+  button:last-of-type {
     background-color: #f44336;
     color: white;
     width: 100%;
   }
+
+
+
 `;
 
 export const ConfigureModal = styled(ModalStyle)`
@@ -228,14 +298,14 @@ export const ConfigureModal = styled(ModalStyle)`
   background-color: #474747;
   z-index: 100;
   border-radius: 8px;
-  button:last-of-type{
-    background-color: #6A6A6A;
+  button:last-of-type {
+    background-color: #6a6a6a;
     padding: 0.5rem;
     font-size: 1.1rem;
     border: none;
   }
 
-  input{
+  input {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -254,18 +324,18 @@ export const ConfigureModal = styled(ModalStyle)`
     border-radius: 50%;
   }
 
-  .configure-modal-header{
+  .configure-modal-header {
     display: flex;
     background: #393939;
     padding: 1rem 1.5rem 1rem 1.5rem;
     justify-content: space-between;
     align-items: center;
 
-    h3{
+    h3 {
       margin: 0rem;
     }
 
-    svg{
+    svg {
       font-size: 1.5rem;
     }
   }
@@ -278,15 +348,16 @@ export const Inner = styled.div`
   gap: 2rem;
 `;
 
-//---------------SIDEBAR------------//
-export const Grid = styled.div`
+export const FlexContainer = styled.div`
   display: flex;
+  align-items: center;
+  margin-right: 2rem;
 `;
-
-//---------------SIDEBAR------------//
 
 export const SideBar = styled.div`
   padding: 1rem 1rem;
-  width: 100px;
   background-color: #474747;
+  height: 100%;
+  border-radius: 0px 8px 8px 0px;
+  margin-right: 2rem;
 `;
