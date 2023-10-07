@@ -8,24 +8,23 @@ import {
 import { addColor } from "../redux/LineReducer";
 import { CanvasArea, CanvasContainer } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useEffect} from "react";
 import { clearCanvas } from "../utils/clearCanvas";
-import DeleteAllModal from "./DeleteAllModal";
+import DeleteAllModal from "./modals/DeleteAllModal";
 import { toolTypeNotEmpty } from "../utils/toolTypeCheck";
 
-const Canvas = ({ ctxRef }) => {
+const Canvas = ({ ctxRef, Refcanvas }) => {
   const { isDrawing } = useSelector((state) => state.drawing);
   const { lineHistory } = useSelector((state) => state.history);
-  const { PopUp } = useSelector((state) => state.modal);
+  const { modals } = useSelector((state) => state.modal);
   const { lineColor } = useSelector((state) => state.color);
   const { lineOpacity } = useSelector((state) => state.opacity);
   const { lineWidth } = useSelector((state) => state.width);
   const { colorHistory } = useSelector((state) => state.colorHistory);
   const { toolType } = useSelector((state) => state.tool);
   const { currentPath } = useSelector((state) => state.currentPath);
+  const { canvas } = useSelector((state) => state.canvas);
   const dispatch = useDispatch();
-
-  const Refcanvas = useRef(null);
 
   useEffect(() => {
     const canvas = Refcanvas.current;
@@ -35,7 +34,7 @@ const Canvas = ({ ctxRef }) => {
     ctx.lineWidth = lineWidth;
     ctxRef.current = ctx;
     redrawCanvas();
-  }, [lineHistory, lineColor, lineOpacity, lineWidth, toolType]);
+  }, [lineHistory, lineColor, lineOpacity, lineWidth, toolType, canvas]);
 
   const startDrawing = (e) => {
     toolTypeNotEmpty(toolType, () => {
@@ -118,17 +117,17 @@ const Canvas = ({ ctxRef }) => {
 
   return (
     <CanvasContainer>
-      <CanvasArea>
+      <CanvasArea $background={canvas.background}>
         <canvas
-          width={1780}
-          height={800}
+          width={canvas.width}
+          height={canvas.height}
           onMouseMove={currentlyDrawing}
           onMouseDown={startDrawing}
           onMouseUp={endDrawing}
           ref={Refcanvas}
         />
       </CanvasArea>
-      {PopUp ? <DeleteAllModal ctxRef={ctxRef} /> : null}
+      {modals.deleteModal ? <DeleteAllModal ctxRef={ctxRef} /> : null}
     </CanvasContainer>
   );
 };
