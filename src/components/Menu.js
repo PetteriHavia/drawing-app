@@ -8,16 +8,17 @@ import {
   InputContainer,
 } from "../styles/Elements.style";
 import { useDispatch, useSelector } from "react-redux";
-import ColorModal from "./ColorModal";
+import ColorModal from "./modals/ColorModal";
 import { changeColor, changeOpacity, changeWidth } from "../redux/LineReducer";
-import { colorModalActive } from "../redux/ModalReducer";
+import CanvasSettingsModal from "./modals/CanvasSettingsModal";
+import { showModal } from "../utils/modalVisibility";
 
 const Menu = () => {
   const { lineOpacity } = useSelector((state) => state.opacity);
   const { lineWidth } = useSelector((state) => state.width);
   const { colorHistory } = useSelector((state) => state.colorHistory);
   const { colorPalette } = useSelector((state) => state.palette);
-  const { colorPopUp } = useSelector((state) => state.colorModal);
+  const { modals } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
 
   const handleChangeWidth = (e) => {
@@ -67,10 +68,6 @@ const Menu = () => {
         <span></span>
       </Colors>
     );
-  };
-
-  const handleShowModal = () => {
-    dispatch(colorModalActive());
   };
 
   const roundetOpacity = (lineOpacity * 100).toFixed(0);
@@ -126,12 +123,13 @@ const Menu = () => {
             <ColorPalette key={item.color} item={item} />
           ))}
         </Palette>
-        <button onClick={handleShowModal}>Configure</button>
+        <button onClick={() => showModal(dispatch, "colorModal")}>Configure</button>
       </ColorContainer>
       <ColorContainer>
         <ColorHistory className="wrap-history" />
       </ColorContainer>
-      {colorPopUp ? <ColorModal /> : null}
+      {modals.colorModal ? <ColorModal /> : null}
+      {modals.canvasSettingsModal ? <CanvasSettingsModal /> : null}
     </ToolSettings>
   );
 };
