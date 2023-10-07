@@ -6,6 +6,8 @@ import {
   BiPencil,
   BiUndo,
   BiRedo,
+  BiSave,
+  BiCog,
 } from "react-icons/bi";
 import { ToolBar, SideBar } from "../styles/Elements.style";
 import {
@@ -15,12 +17,13 @@ import {
   deleteFromHistory,
   deleteFromredoHistory,
 } from "../redux/DrawingReducer";
-import { modalActive } from "../redux/ModalReducer";
+import { showDeleteModal, showModal } from "../utils/modalVisibility";
 
-const SideMenu = () => {
+const SideMenu = ({ Refcanvas }) => {
   const { lineColor } = useSelector((state) => state.color);
   const { lineHistory } = useSelector((state) => state.history);
   const { redoHistory } = useSelector((state) => state.redo);
+  const { canvas } = useSelector((state) => state.canvas);
   const dispatch = useDispatch();
 
   const handleChangeColor = (e) => {
@@ -29,12 +32,6 @@ const SideMenu = () => {
 
   const handleToolChange = (selectedTool) => {
     dispatch(changeTool(selectedTool));
-  };
-
-  const handleShowModal = () => {
-    if (lineHistory.length > 0) {
-      dispatch(modalActive());
-    }
   };
 
   const handleDelete = () => {
@@ -53,6 +50,14 @@ const SideMenu = () => {
     }
   };
 
+  const handleSaveCanvasImage = (e) => {
+    const dataURL = Refcanvas.current.toDataURL("image/png");
+    const downloadLink = document.createElement('a');
+    downloadLink.href = dataURL;
+    downloadLink.download = canvas.projectName;
+    downloadLink.click();
+  }
+
   return (
     <SideBar>
       <ToolBar>
@@ -61,7 +66,9 @@ const SideMenu = () => {
         <button onClick={() => handleToolChange("eraser")}><BiEraser /></button>
         <button onClick={handleDelete}><BiUndo /></button>
         <button onClick={handleRedo}><BiRedo /></button>
-        <button onClick={handleShowModal}><BiTrash /></button>
+        <button onClick={() => showModal(dispatch, "canvasSettingsModal")}><BiCog /></button>
+        <button onClick={handleSaveCanvasImage}><BiSave /></button>
+        <button onClick={() => showDeleteModal(dispatch, "deleteModal", lineHistory)}><BiTrash /></button>
       </ToolBar>
     </SideBar>
   );
