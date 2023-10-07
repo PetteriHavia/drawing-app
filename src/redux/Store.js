@@ -6,6 +6,7 @@ import {
   currentPathReducer,
   redoReducer,
 } from "./DrawingReducer";
+import { canvasReducer } from "./CanvasReducer";
 import {
   colorReducer,
   opacityReducer,
@@ -13,7 +14,7 @@ import {
   colorHistoryReducer,
   colorPaletteReducer,
 } from "./LineReducer";
-import { modalReducer, colorModalReducer } from "./ModalReducer";
+import { modalReducer } from "./ModalReducer";
 
 export default configureStore({
   reducer: {
@@ -27,7 +28,7 @@ export default configureStore({
     width: widthReducer,
     colorHistory: colorHistoryReducer,
     palette: colorPaletteReducer,
-    colorModal: colorModalReducer,
     tool: toolReducer,
+    canvas: canvasReducer,
   },
 });

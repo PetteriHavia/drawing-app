@@ -5,14 +5,15 @@ import { FlexContainer } from "../styles/Elements.style";
 import { useRef } from "react";
 
 const Home = () => {
+  const Refcanvas = useRef(null);
   const ctxRef = useRef(null);
 
   return (
     <>
       <Menu ctxRef={ctxRef} />
       <FlexContainer>
-        <SideMenu ctxRef={ctxRef} />
-        <Canvas ctxRef={ctxRef} />
+        <SideMenu Refcanvas={Refcanvas}/>
+        <Canvas ctxRef={ctxRef} Refcanvas={Refcanvas}/>
       </FlexContainer>
     </>
   );

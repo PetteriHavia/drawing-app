@@ -236,6 +236,7 @@ export const CanvasContainer = styled.div`
   background: #252525;
   text-align: center;
   overflow: auto;
+  flex-basis: 100%;
 
   button {
     padding: 1rem 2rem;
@@ -257,7 +258,7 @@ export const CanvasArea = styled.div`
   canvas {
     border: 2px solid;
     border-color: black;
-    background: white;
+    background-color: ${(props) => props.$background || "white"};
   }
 `;
 
@@ -270,6 +271,7 @@ export const ModalStyle = styled.div`
   right: 0;
   top: 3rem;
   margin: auto;
+  box-shadow: 0px 4px 30px rgba(0,0,0,0.25);
 
   h3 {
     margin: 1rem 0rem;
@@ -289,12 +291,72 @@ export const ModalStyle = styled.div`
   }
 `;
 
+export const SettingsModal = styled(ModalStyle)`
+  background-color: #474747;
+  padding: 0rem;
+  background-color: #474747;
+  z-index: 100;
+  border-radius: 8px;
+  width: 300px;
+
+  button:last-of-type {
+    background-color: #6a6a6a;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    border: none;
+  }
+
+  .configure-modal-header {
+    display: flex;
+    background: #393939;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      margin: 0rem;
+    }
+
+    svg {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  }
+
+  input, select{
+    color: white;
+    font-size: 1rem;
+  }
+
+  #bg-select{
+    padding: .5rem;
+    background-color: #252525;
+  }
+
+  #project-name, #bg-select{
+    width: 150px;
+  }
+
+  input[type="text"]{
+    width: 80px;
+    padding: .5rem;
+    background-color: #252525;
+  }
+
+  span{
+    display: grid;
+    grid-template-columns: 100px 100px 20px;
+    align-items: center;
+  }
+`;
+
 export const ConfigureModal = styled(ModalStyle)`
   padding: 0rem;
   max-width: 380px;
   background-color: #474747;
   z-index: 100;
   border-radius: 8px;
+
   button:last-of-type {
     background-color: #6a6a6a;
     padding: 0.5rem;
@@ -334,6 +396,7 @@ export const ConfigureModal = styled(ModalStyle)`
 
     svg {
       font-size: 1.5rem;
+      cursor: pointer;
     }
   }
 `;
