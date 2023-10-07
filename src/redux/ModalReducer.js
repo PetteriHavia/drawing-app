@@ -1,37 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const modalSlice = createSlice({
-    name: "ModalPopUp",
+  export const modalSlice = createSlice({
+    name: "Modals",
     initialState: {
-      PopUp: false,
+      modals: {
+        deleteModal: false,
+        colorModal: false,
+        canvasSettingsModal: false,
+      }
     },
     reducers: {
-      modalActive: (state) => {
-        state.PopUp = true;
+      modalActive: (state, action) => {
+        const modalName = action.payload;
+        if (state.modals.hasOwnProperty(modalName)) {
+            state.modals[modalName] = true;
+        }
       },
-      modalHide: (state) => {
-        state.PopUp = false;
+      modalHide: (state, action) => {
+        if (state.modals.hasOwnProperty(action.payload)) {
+            state.modals[action.payload] = false;
+        }
       }, 
     },
   })
 
-  export const colorModalSlice = createSlice({
-    name: "ColorModalPopUp",
-    initialState: {
-      colorPopUp: false,
-    },
-    reducers: {
-      colorModalActive: (state) => {
-        state.colorPopUp = true;
-      },
-      colorModalHide: (state) => {
-        state.colorPopUp = false;
-      }, 
-    },
-  })
-
-  export const { modalHide, modalActive } = modalSlice.actions;
-  export const { colorModalHide, colorModalActive } = colorModalSlice.actions;
-
+  export const { modalActive, modalHide } = modalSlice.actions;
   export const modalReducer = modalSlice.reducer;
-  export const colorModalReducer = colorModalSlice.reducer;
