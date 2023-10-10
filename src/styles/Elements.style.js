@@ -10,6 +10,8 @@ export const InnerContainer = styled.div`
 `;
 
 export const ToolSettings = styled.div`
+  position: sticky;
+  top: 0;
   display: flex;
   color: white;
   align-items: center;
@@ -17,6 +19,7 @@ export const ToolSettings = styled.div`
   padding: 1rem 6rem;
   z-index: 400;
   background: #474747;
+  min-height: 90px;
 
   input[type="number"] {
     text-align: center;
@@ -46,6 +49,22 @@ export const ToolSettings = styled.div`
     transition: opacity 0.2s;
   }
 
+  input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    background: #e7e5e5;
+    border-radius: 8px;
+    border: none;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border: none;
+    border-radius: 50%;
+  }
+
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -57,9 +76,9 @@ export const ToolSettings = styled.div`
   }
 
   input[type="range"]::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    background: #04aa6d;
+    width: 10px;
+    height: 20px;
+    background: #63c1d6;
     cursor: pointer;
   }
 
@@ -122,7 +141,13 @@ export const ToolBar = styled.div`
   button {
     background: none;
     border: none;
-    margin: 1.5rem 0rem;
+    padding: 0.2rem;
+    margin: 1rem 0rem;
+    border-radius: 8px;
+
+    &:hover {
+      background-color: #252525;
+    }
   }
 `;
 
@@ -150,6 +175,13 @@ export const Colors = styled.div`
     height: 25px;
     display: block;
     border-radius: 50%;
+  }
+
+  @media (max-width: 768px) {
+    span {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;
 
@@ -233,10 +265,10 @@ export const Palette = styled.div`
 `;
 
 export const CanvasContainer = styled.div`
-  background: #252525;
   text-align: center;
   overflow: auto;
   flex-basis: 100%;
+  margin: 0rem 2rem;
 
   button {
     padding: 1rem 2rem;
@@ -253,8 +285,6 @@ export const CanvasContainer = styled.div`
 `;
 
 export const CanvasArea = styled.div`
-  padding: 2rem 0rem;
-
   canvas {
     border: 2px solid;
     border-color: black;
@@ -271,7 +301,7 @@ export const ModalStyle = styled.div`
   right: 0;
   top: 3rem;
   margin: auto;
-  box-shadow: 0px 4px 30px rgba(0,0,0,0.25);
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.25);
 
   h3 {
     margin: 1rem 0rem;
@@ -323,27 +353,29 @@ export const SettingsModal = styled(ModalStyle)`
     }
   }
 
-  input, select{
+  input,
+  select {
     color: white;
     font-size: 1rem;
   }
 
-  #bg-select{
-    padding: .5rem;
+  #bg-select {
+    padding: 0.5rem;
     background-color: #252525;
   }
 
-  #project-name, #bg-select{
+  #project-name,
+  #bg-select {
     width: 150px;
   }
 
-  input[type="text"]{
+  input[type="text"] {
     width: 80px;
-    padding: .5rem;
+    padding: 0.5rem;
     background-color: #252525;
   }
 
-  span{
+  span {
     display: grid;
     grid-template-columns: 100px 100px 20px;
     align-items: center;
@@ -410,14 +442,16 @@ export const Inner = styled.div`
 
 export const FlexContainer = styled.div`
   display: flex;
-  align-items: center;
-  margin-right: 2rem;
+  justify-content: center;
+  height: 100%;
+  padding: 1.5rem 0rem;
 `;
 
 export const SideBar = styled.div`
+  position: sticky;
+  top: 20%;
+  height: 100%;
   padding: 1rem 1rem;
   background-color: #474747;
-  height: 100%;
   border-radius: 0px 8px 8px 0px;
-  margin-right: 2rem;
 `;
