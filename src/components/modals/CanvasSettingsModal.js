@@ -1,9 +1,9 @@
-import { SettingsModal, Inner } from "../../styles/Elements.style";
+import { SettingsModal, Inner, ModalErrorMessage } from "../../styles/Elements.style";
 import { FiX } from "react-icons/fi";
 import { hideModal} from "../../utils/modalVisibility";
 import { useDispatch} from "react-redux";
 import { useState } from "react";
-import { changeBackground, changeCanvasSize, changeProjectName } from "../../redux/CanvasReducer";
+import { changeBackground, changeCanvasSize, changeProjectName} from "../../redux/CanvasReducer";
 
 const CanvasSettingsModal = () => {
   const dispatch = useDispatch();
@@ -13,13 +13,12 @@ const CanvasSettingsModal = () => {
   const [height, setHeight] = useState(800);
   const [background, setBackground] = useState("#fff");
   const [colorWheel, setColorWheel] = useState(false);
-  
 
   const handleSetWidth = (e) => {
     const value = e.target.value;
     const numericValue = parseInt(value, 10);
     if (isNaN(numericValue)) {
-      setWidth(1);
+      setWidth("");
       return;
     } else {
       setWidth(numericValue);
@@ -30,7 +29,7 @@ const CanvasSettingsModal = () => {
     const value = e.target.value;
     const numericValue = parseInt(value, 10);
     if (isNaN(numericValue)) {
-      setHeight(1);
+      setHeight("");
       return;
     } else {
       setHeight(numericValue);
@@ -83,10 +82,10 @@ const CanvasSettingsModal = () => {
   const handleSetCanvasChanges = () => {
     let isValid = true;
 
-    if(isNaN(width) || width < 1) {
+    if(isNaN(width) || width < 1 || width === "") {
       isValid = false;
     }
-    if(isNaN(height) || height < 1) {
+    if(isNaN(height) || height < 1 || height === "") {
       isValid = false;
     }
     if(background === "") {
@@ -120,18 +119,17 @@ const CanvasSettingsModal = () => {
             placeholder="New Project"
             type="text"
             id="project-name"
-            
             onChange={handleSetProjectName}
           />
         </span>
         <span>
           <label>Width:</label>
-          <input type="text" value={width} onChange={handleSetWidth} />
+            <input type="text" value={width} onChange={handleSetWidth} />
           <label>px</label>
         </span>
         <span>
           <label>Height:</label>
-          <input type="text" value={height} onChange={handleSetHeight} />
+            <input type="text" value={height} onChange={handleSetHeight} />
           <label>px</label>
         </span>
         <span>
