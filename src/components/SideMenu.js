@@ -14,7 +14,7 @@ import {
   addToHistory,
   addToredoHistory,
   changeTool,
-  deleteFromHistory,
+  deleteFromHistory, 
   deleteFromredoHistory,
 } from "../redux/DrawingReducer";
 import { showDeleteModal, showModal } from "../utils/modalVisibility";
