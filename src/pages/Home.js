@@ -10,7 +10,7 @@ const Home = () => {
 
   return (
     <>
-      <Menu ctxRef={ctxRef} />
+    <Menu ctxRef={ctxRef} />
       <FlexContainer>
         <SideMenu Refcanvas={Refcanvas}/>
         <Canvas ctxRef={ctxRef} Refcanvas={Refcanvas}/>
