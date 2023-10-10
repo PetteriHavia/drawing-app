@@ -1,9 +1,13 @@
-import { SettingsModal, Inner, ModalErrorMessage } from "../../styles/Elements.style";
+import { SettingsModal, Inner } from "../../styles/Elements.style";
 import { FiX } from "react-icons/fi";
-import { hideModal} from "../../utils/modalVisibility";
-import { useDispatch} from "react-redux";
+import { hideModal } from "../../utils/modalVisibility";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { changeBackground, changeCanvasSize, changeProjectName} from "../../redux/CanvasReducer";
+import {
+  changeBackground,
+  changeCanvasSize,
+  changeProjectName,
+} from "../../redux/CanvasReducer";
 
 const CanvasSettingsModal = () => {
   const dispatch = useDispatch();
@@ -40,9 +44,9 @@ const CanvasSettingsModal = () => {
     const value = e.target.value;
     const allowedCharacters = /^[a-zA-Z0-9\s_-]+$/;
 
-    if(value === "") {
+    if (value === "") {
       setProjectName(value);
-    }else if (!allowedCharacters.test(value)) {
+    } else if (!allowedCharacters.test(value)) {
       return;
     }
     setProjectName(value);
@@ -51,59 +55,57 @@ const CanvasSettingsModal = () => {
   const handleSetBackground = (e) => {
     const value = e.target.value;
     console.log(value);
-    if(value !== "Custom") {
+    if (value !== "Custom") {
       setColorWheel(false);
     }
-    switch(value) {
-      case("Black") :
+    switch (value) {
+      case "Black":
         setBackground("#000");
         return;
-      case("White") :
+      case "White":
         setBackground("#fff");
         return;
-      case("Transparent") :
+      case "Transparent":
         setBackground("transparent");
         return;
-      case("Custom") : 
+      case "Custom":
         setBackground("");
         setColorWheel(true);
         return;
       default:
         return;
     }
-  }
+  };
 
   const handleSetCustomColor = (e) => {
     const value = e.target.value;
     setBackground(value);
-  }
-
+  };
 
   const handleSetCanvasChanges = () => {
     let isValid = true;
 
-    if(isNaN(width) || width < 1 || width === "") {
+    if (isNaN(width) || width < 1 || width === "") {
       isValid = false;
     }
-    if(isNaN(height) || height < 1 || height === "") {
+    if (isNaN(height) || height < 1 || height === "") {
       isValid = false;
     }
-    if(background === "") {
+    if (background === "") {
       isValid = false;
     }
-    if(projectName === "") {
+    if (projectName === "") {
       setProjectName("New Project");
     }
 
-    if(isValid) {
-      dispatch(changeCanvasSize({width: width, height: height}));
+    if (isValid) {
+      dispatch(changeCanvasSize({ width: width, height: height }));
       dispatch(changeBackground(background));
       dispatch(changeProjectName(projectName));
       hideModal(dispatch, "canvasSettingsModal");
-    }else{
+    } else {
       return;
     }
-
   };
 
   return (
@@ -124,24 +126,30 @@ const CanvasSettingsModal = () => {
         </span>
         <span>
           <label>Width:</label>
-            <input type="text" value={width} onChange={handleSetWidth} />
+          <input type="text" value={width} onChange={handleSetWidth} />
           <label>px</label>
         </span>
         <span>
           <label>Height:</label>
-            <input type="text" value={height} onChange={handleSetHeight} />
+          <input type="text" value={height} onChange={handleSetHeight} />
           <label>px</label>
         </span>
         <span>
           <label>Background</label>
-          <select id="bg-select"onChange={handleSetBackground}>
+          <select id="bg-select" onChange={handleSetBackground}>
             <option>White</option>
             <option>Black</option>
             <option>Transparent</option>
             <option>Custom</option>
           </select>
         </span>
-        {colorWheel ? <input type="color" value={background} onChange={handleSetCustomColor} /> : null}
+        {colorWheel ? (
+          <input
+            type="color"
+            value={background}
+            onChange={handleSetCustomColor}
+          />
+        ) : null}
         <button onClick={handleSetCanvasChanges}>OK</button>
       </Inner>
     </SettingsModal>

@@ -301,6 +301,11 @@ export const ModalStyle = styled.div`
   right: 0;
   top: 3rem;
   margin: auto;
+  z-index: 500;
+  background-color: #474747;
+  color: white;
+  border-radius: 8px;
+  z-index: 500;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.25);
 
   h3 {
@@ -325,7 +330,6 @@ export const SettingsModal = styled(ModalStyle)`
   background-color: #474747;
   padding: 0rem;
   background-color: #474747;
-  z-index: 100;
   border-radius: 8px;
   width: 300px;
 
@@ -385,9 +389,6 @@ export const SettingsModal = styled(ModalStyle)`
 export const ConfigureModal = styled(ModalStyle)`
   padding: 0rem;
   max-width: 380px;
-  background-color: #474747;
-  z-index: 100;
-  border-radius: 8px;
 
   button:last-of-type {
     background-color: #6a6a6a;
