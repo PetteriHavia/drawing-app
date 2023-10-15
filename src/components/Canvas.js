@@ -26,6 +26,8 @@ const Canvas = ({ ctxRef, Refcanvas }) => {
   const { canvas } = useSelector((state) => state.canvas);
   const dispatch = useDispatch();
 
+  
+
   useEffect(() => {
     const canvas = Refcanvas.current;
     const ctx = canvas.getContext("2d");
@@ -34,7 +36,7 @@ const Canvas = ({ ctxRef, Refcanvas }) => {
     ctx.lineWidth = lineWidth;
     ctxRef.current = ctx;
     redrawCanvas();
-  }, [lineHistory, lineColor, lineOpacity, lineWidth, toolType, canvas]);
+  }, [lineHistory, lineColor, lineOpacity, lineWidth, toolType, canvas, Refcanvas, ctxRef]);
 
   const startDrawing = (e) => {
     toolTypeNotEmpty(toolType, () => {
